@@ -11,6 +11,18 @@ class ReglaValidacion(ABC):
     def es_valida(self):
         pass
 
+    def _validar_longitud(self, clave: str) -> bool:
+        ...
+
+    def _contiene_mayuscula(self, clave: str) -> bool:
+        ...
+
+    def _contiene_minuscula(self, clave: str) -> bool:
+        ...
+
+    def _contiene_numero(self, clave: str) -> bool:
+        ...
+
 
 
 
