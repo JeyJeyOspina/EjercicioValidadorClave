@@ -35,6 +35,27 @@ class ReglaValidacion(ABC):
                 return True
         return False
 
+class ReglaValidacionGanimedes(ReglaValidacion):
 
+    def es_valida(self):
+        pass
 
+    def contiene_caracter_especial(self, clave: str):
+
+        caracteres_especiales: list[str] = ["@", "_", "#", "$", "%"]
+
+        for caracter in clave:
+            if caracter in caracteres_especiales:
+                return True
+        return False
+
+    def contiene_calisto(self, clave):
+
+        cantidad_mayusculas: int = 0
+
+        for caracter in clave:
+            if caracter.isupper():
+                cantidad_mayusculas += 1
+        if  2 <= cantidad_mayusculas < len(clave):
+            return True
 
