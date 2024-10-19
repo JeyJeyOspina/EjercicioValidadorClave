@@ -1,4 +1,5 @@
-from validadorclave.modelo.errores import ValidadorError
+from validadorclave.modelo.errores import ValidadorError, NoCumpleLongitudMinimaError, NoTieneLetraMayusculaError, \
+    NoTieneLetraMinusculaError, NoTieneNumeroError, NoTieneCaracterEspecialError, NoTienePalabraSecretaError
 from abc import  ABC, abstractmethod
 
 
@@ -8,7 +9,7 @@ class ReglaValidacion(ABC):
         self._longitud_esperada: int = _longitud_esperada
 
     @abstractmethod
-    def es_valida(self):
+    def es_valida(self, clave: str) -> bool :
         pass
 
     def _validar_longitud(self, clave: str) -> bool:
@@ -37,10 +38,26 @@ class ReglaValidacion(ABC):
 
 class ReglaValidacionGanimedes(ReglaValidacion):
 
-    def es_valida(self):
-        pass
+    def __init__(self):
+        super().__init__(8)
 
-    def contiene_caracter_especial(self, clave: str):
+    def es_valida(self, clave: str) -> bool:
+
+        if not self._validar_longitud(clave):
+            raise NoCumpleLongitudMinimaError
+        if not self._contiene_mayuscula(clave):
+            raise NoTieneLetraMayusculaError
+        if not self._contiene_minuscula(clave):
+            raise NoTieneLetraMinusculaError
+        if not self._contiene_numero(clave):
+            raise NoTieneNumeroError
+        if not self.contiene_caracter_especial(clave):
+            raise NoTieneCaracterEspecialError
+        else:
+            return True
+
+
+    def contiene_caracter_especial(self, clave: str) -> bool:
 
         caracteres_especiales: list[str] = ["@", "_", "#", "$", "%"]
 
@@ -51,13 +68,26 @@ class ReglaValidacionGanimedes(ReglaValidacion):
 
 class ReglaValidacionCalisto(ReglaValidacion):
 
-    def contiene_calisto(self, clave):
+    def __init__(self):
+        super().__init__(6)
+
+    def es_valida(self, clave: str) -> bool:
+
+        if not self._validar_longitud(clave):
+            raise NoCumpleLongitudMinimaError
+        if not self._contiene_numero(clave):
+            raise NoTieneNumeroError
+        if not self.contiene_calisto(clave):
+            raise NoTienePalabraSecretaError
+        return True
+
+    def contiene_calisto(self, clave: str) -> bool:
 
         cantidad_mayusculas: int = 0
 
         for caracter in clave:
             if caracter.isupper():
                 cantidad_mayusculas += 1
-        if  2 <= cantidad_mayusculas < len(clave):
+        if  2 <= cantidad_mayusculas < len(clave) and clave.lower() == "calisto":
             return True
-
+        return False
