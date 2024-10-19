@@ -49,6 +49,8 @@ class ReglaValidacionGanimedes(ReglaValidacion):
                 return True
         return False
 
+class ReglaValidacionCalisto(ReglaValidacion):
+
     def contiene_calisto(self, clave):
 
         cantidad_mayusculas: int = 0
