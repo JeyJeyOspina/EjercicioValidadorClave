@@ -88,6 +88,15 @@ class ReglaValidacionCalisto(ReglaValidacion):
         for caracter in clave:
             if caracter.isupper():
                 cantidad_mayusculas += 1
-        if  2 <= cantidad_mayusculas < len(clave) and clave.lower() == "calisto":
-            return True
+        if "calisto" in clave.lower():
+            if 2 <= cantidad_mayusculas < len("calisto"):
+                return True
         return False
+
+class Validador:
+
+    def __init__(self, regla: ReglaValidacion):
+        self.regla: ReglaValidacion = regla
+
+    def es_valida(self, clave: str) -> bool:
+        return self.regla.es_valida(clave)
